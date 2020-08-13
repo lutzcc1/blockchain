@@ -6,7 +6,7 @@ class Blockchain {
         this.chain = [this.createGenesisBlock()];
         this.pendingTransactions = [];
         this.miningReward = 100;
-        this.difficulty = 3;
+        this.difficulty = 4;
     }
 
     createGenesisBlock() {
@@ -18,10 +18,9 @@ class Blockchain {
     }
 
     minePendingTransactions(miningRewardAddress) {
-        let block = new Block(Date.now(), this.pendingTransactions);
+        let block = new Block(Date.now(), this.pendingTransactions, this.chain[this.chain.length -1].hash);
         block.mineBlock(this.difficulty);
 
-        console.log('Block succesfully mined!');
         this.chain.push(block);
 
         this.pendingTransactions = [
@@ -37,7 +36,11 @@ class Blockchain {
         if(!transaction.isValid()) {
             throw new Error('Cannot add invalid transaction to chain');
         }
-        
+
+        if(this.getBalanceOfAddress(transaction.fromAddress) < transaction.amount) {
+            throw new Error("Not enough funds");
+        }
+
         this.pendingTransactions.push(transaction);
     }
 
@@ -59,16 +62,15 @@ class Blockchain {
     }
 
     isChainValid() {
-        for (let i = 1; i < this.chain.length - 1; i++) {
+        for (let i = 1; i < this.chain.length; i++) {
             const currentBlock = this.chain[i];
             const previousBlock = this.chain[i - 1];
 
             if (currentBlock.hash !== currentBlock.calculateHash()) return false;
             if (currentBlock.previousHash !== previousBlock.hash) return false;
             if (!currentBlock.hasValidTransactions()) return false;
-
-            return true;
         }
+        return true;
     }
 }
 

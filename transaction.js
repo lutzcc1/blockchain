@@ -14,7 +14,7 @@ class Transaction {
     }
 
     signTransaction(signKey) {
-        if(signKey.getPubublic('hex') !== this.fromAddress) {
+        if(signKey.getPublic('hex') !== this.fromAddress) {
             throw new Error('You cannot sign transactions for other wallets!');
         }
 

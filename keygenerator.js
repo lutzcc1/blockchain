@@ -1,3 +1,5 @@
+// this file generate key pairs to use on the blockchain
+
 const EC = require('elliptic').ec;
 const ec = new EC('secp256k1');
 

@@ -1,9 +1,9 @@
 const SHA256 = require('crypto-js/sha256');
 
 class Block {
-    constructor(timestamp, transaction, previousHash = '') {
+    constructor(timestamp, transactions, previousHash = '') {
         this.timestamp = timestamp;
-        this.transactions = transaction;
+        this.transactions = transactions;
         this.previousHash = previousHash;
         this.hash = this.calculateHash();
         this.nonce = 0;
@@ -14,6 +14,10 @@ class Block {
     }
 
     mineBlock(difficulty) {
+        if(!this.hasValidTransactions) {
+            throw new Error('The block has invalid transactions');
+        }
+
         while(this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
             this.nonce++;
             this.hash = this.calculateHash();
