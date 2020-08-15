@@ -27,11 +27,11 @@ class Block {
     }
 
     hasValidTransactions() {
+        if (this.transactions.length === 0) return true;
         for(let transaction of this.transactions) {
             if(!transaction.isValid()) return false;
-
-            return true;
         }
+        return true;
     }
 }
 

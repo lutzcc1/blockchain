@@ -13,14 +13,28 @@ const xWalletAddress = xKey.getPublic('hex');
 
 let lcoin = new Blockchain();
 
+lcoin.minePendingTransactions(myWalletAddress);
+lcoin.minePendingTransactions("minerAddress");
 
+let tx1 = new Transaction(myWalletAddress, xWalletAddress, 10);
+tx1.signTransaction(myKey);
+lcoin.addTransaction(tx1);
 
+lcoin.minePendingTransactions("minerAddress");
 
+let tx2 = new Transaction(xWalletAddress, "TestAddress", 3);
+tx2.signTransaction(xKey);
+lcoin.addTransaction(tx2);
 
+lcoin.minePendingTransactions("minerAddress");
 
+console.log(JSON.stringify(lcoin, null, 4));
 
+console.log("My balance: ", lcoin.getBalanceOfAddress(myWalletAddress));
+console.log("x balance: ", lcoin.getBalanceOfAddress(xWalletAddress));
+console.log("TestAddress balance: ", lcoin.getBalanceOfAddress("TestAddress"));
 
-
+console.log("Valid: ", lcoin.isChainValid());
 
 
 
