@@ -10,7 +10,7 @@ class Blockchain {
     }
 
     createGenesisBlock() {
-        return new Block("11/08/2020", "LCoin", null);
+        return new Block(Date.now(), "LCoin", null);
     }
 
     getLatestBlock() {
